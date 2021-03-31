@@ -18,17 +18,33 @@
 //! - `#![feature(panic_info_message)]` 
 //! panic! 时，获取其中的信息并打印
 #![feature(panic_info_message)]
+
 #[macro_use]
 mod console;
 mod panic;
 mod sbi;
+mod interrupt;
+
 // 汇编编写的程序⼊⼝，具体⻅该⽂件
 global_asm!(include_str!("entry.asm"));
+
 /// Rust 的⼊⼝函数
 ///
 /// 在 `_start` 为我们进⾏了⼀系列准备之后，这是第⼀个被调⽤的 Rust 函数
 #[no_mangle]
 pub extern "C" fn rust_main() -> ! {
- println!("Hello Chen shenyang!");
- panic!("end of rust_main")
+	println!("Hello, Chenshenyang!");
+	
+	// 初始化各种模块
+	interrupt::init();
+	
+	unsafe {
+		llvm_asm!("ebreak"::::"volatile");
+	};
+	
+	loop{};
+	
+	unreachable!();
 }
+
+

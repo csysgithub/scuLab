@@ -1,6 +1,8 @@
 //! 代替 std 库，实现 panic 和 abort 的功能
+
 use core::panic::PanicInfo;
 use crate::sbi::shutdown;
+
 /// 打印 panic 的信息并 [`shutdown`]
 ///
 /// ### `#[panic_handler]` 属性
@@ -14,6 +16,7 @@ fn panic_handler(info: &PanicInfo) -> ! {
  println!("\x1b[1;31mpanic: '{}'\x1b[0m", info.message().unwrap());
  shutdown()
 }
+
 /// 终⽌程序
 ///
 /// 调⽤ [`panic_handler`]

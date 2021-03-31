@@ -10,12 +10,15 @@
 //!
 //! ['write_str']: core::fmt::Write::write_str
 //! ['write_fmt']: core::fmt::Write::write_fmt
+
 use crate::sbi::*;
 use core::fmt::{self, Write};
+
 /// ⼀个 [Zero-Sized Type]，实现 ['core::fmt::Write'] trait 来进行格式化输出
 ///
 /// ZST 只可能有⼀个值（即为空），因此它本身就是⼀个单件
 struct Stdout;
+
 impl Write for Stdout {
  /// 打印⼀个字符串
  ///
@@ -31,6 +34,7 @@ impl Write for Stdout {
  	Ok(())
  }
 }
+
 /// 打印由 ['core::format_args!'] 格式化后的数据
 ///
 /// ['print!'] 和 ['println!'] 宏都将展开成此函数
@@ -39,6 +43,7 @@ impl Write for Stdout {
 pub fn print(args: fmt::Arguments) {
  Stdout.write_fmt(args).unwrap();
 }
+
 /// 实现类似于标准库中的 'print!' 宏
 ///
 /// 使⽤实现了 ['core::fmt::Write'] trait 的 ['console::Stdout']
@@ -48,6 +53,7 @@ macro_rules! print {
  $crate::console::print(format_args!($fmt $(, $($arg)+)?));
  }
 }
+
 /// 实现类似于标准库中的 'println!' 宏
 ///
 /// 使用实现了 ['core::fmt::Write'] trait 的 ['console::Stdout']
