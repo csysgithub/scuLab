@@ -18,7 +18,7 @@ lazy_static! {
 
 /// 基于线段树的帧分配 / 回收
 pub struct FrameAllocator<T: Allocator> {
-    /// 可用区间起始
+    /// 可用区间的起始
     start_ppn: PhysicalPageNumber,
     /// 分配器
     allocator: T,
@@ -33,7 +33,7 @@ impl<T: Allocator> FrameAllocator<T> {
         }
     }
 
-    /// 分配帧，如果没有剩余空间范围 'Err'
+    /// 分配帧，如果没有剩余则返回 `Err`
     pub fn alloc(&mut self) -> MemoryResult<FrameTracker> {
         self.allocator
             .alloc()
